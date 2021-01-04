@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.5
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: Running pylint
+          command: |
+            pip install pylint
+            pylint handler.py
+      
+      - store_artifacts:
+          path: test-reports/
+          destination: python_app
